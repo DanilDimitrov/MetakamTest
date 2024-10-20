@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - Manufacturers</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+                <div class="sidebar-sticky">
+                    <h5>Навигация</h5>
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/client/brands">
+                                Бренды
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" href="/client/manufacturers">
+                                Производители
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+
+            <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+                <h1>Производители</h1>
+                <button class="btn btn-primary" data-toggle="modal" data-target="#addManufacturerModal">Добавить запись</button>
+
+                <h2>Существующие Производители</h2>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Имя</th>
+                            <th>Описание</th>
+                            <th>Страна</th>
+                            <th>Сертификаты</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for manufacturer in manufacturers %}
+                        <tr>
+                            <td>{{ manufacturer.name }}</td>
+                            <td>{{ manufacturer.description }}</td>
+                            <td>{{ manufacturer.country }}</td>
+                            <td>{{ manufacturer.certificates }}</td>
+                            <td>
+                                <ul>
+                                    {% for brand in manufacturer.brands %}
+                                        <li>{{ brand.name }}</li>
+                                    {% endfor %}
+                                </ul>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </main>
+        </div>
+    </div>
+
+    <!-- Modal for adding a manufacturer -->
+    <div class="modal fade" id="addManufacturerModal" tabindex="-1" role="dialog" aria-labelledby="addManufacturerModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addManufacturerModalLabel">Добавить Производителя</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form method="POST" action="/client/manufacturers">
+                    <div class="modal-body">
+                        {{ form.hidden_tag() }}
+                        <div class="form-group">
+                            {{ form.name.label }}<br>
+                            {{ form.name(class="form-control") }}
+                            {% for error in form.name.errors %}
+                                <div class="text-danger">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                        <div class="form-group">
+                            {{ form.description.label }}<br>
+                            {{ form.description(class="form-control") }}
+                            {% for error in form.description.errors %}
+                                <div class="text-danger">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                        <div class="form-group">
+                            {{ form.country.label }}<br>
+                            {{ form.country(class="form-control") }}
+                            {% for error in form.country.errors %}
+                                <div class="text-danger">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                        <div class="form-group">
+                            {{ form.certificates.label }}<br>
+                            {{ form.certificates(class="form-control") }}
+                            {% for error in form.certificates.errors %}
+                                <div class="text-danger">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+                        <button type="submit" class="btn btn-primary">Добавить Производителя</button>
+                    </div>
+                </form>
+                
+                
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
